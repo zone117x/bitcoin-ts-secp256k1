@@ -428,6 +428,26 @@ SECP256K1_API SECP256K1_WARN_UNUSED_RESULT int secp256k1_ecdsa_verify(
     const secp256k1_pubkey *pubkey
 ) SECP256K1_ARG_NONNULL(1) SECP256K1_ARG_NONNULL(2) SECP256K1_ARG_NONNULL(3) SECP256K1_ARG_NONNULL(4);
 
+/** Malleate an ECDSA signature. 
+ * 
+ *  Returns: 1 always.
+ *  Args: ctx:    a secp256k1 context object
+ *  Out:  sigout: a pointer to a signature to fill with the malleated form.
+ *  In:   sigin:  a pointer to a signature to malleate (cannot be NULL)
+ * 
+ *  This is done by negating the S value modulo the order of the curve, 
+ *  'flipping' the sign of the random point R which is not included in the 
+ *  signature.
+ * 
+ *  This method is added by bitcoin-ts to make testing of 
+ *  secp256k1_ecdsa_signature_normalize easier.
+ */
+SECP256K1_API int secp256k1_ecdsa_signature_malleate(
+    const secp256k1_context* ctx,
+    secp256k1_ecdsa_signature *sigout,
+    const secp256k1_ecdsa_signature *sigin
+) SECP256K1_ARG_NONNULL(1) SECP256K1_ARG_NONNULL(3);
+
 /** Convert a signature to a normalized lower-S form.
  *
  *  Returns: 1 if sigin was not normalized, 0 if it already was.
