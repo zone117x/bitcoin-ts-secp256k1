@@ -45,8 +45,8 @@ int secp256k1_ecdh(const secp256k1_context* ctx, unsigned char *output, const se
     if (overflow || secp256k1_scalar_is_zero(&s)) {
         ret = 0;
     } else {
-        unsigned char x[32];
-        unsigned char y[32];
+        // unsigned char x[32];
+        // unsigned char y[32];
 
         secp256k1_ecmult_const(&res, &pt, &s, 256);
         secp256k1_ge_set_gej(&pt, &res);
@@ -54,10 +54,11 @@ int secp256k1_ecdh(const secp256k1_context* ctx, unsigned char *output, const se
         /* Compute a hash of the point */
         secp256k1_fe_normalize(&pt.x);
         secp256k1_fe_normalize(&pt.y);
-        secp256k1_fe_get_b32(x, &pt.x);
-        secp256k1_fe_get_b32(y, &pt.y);
+        secp256k1_fe_get_b32(output, &pt.x);
+        // secp256k1_fe_get_b32(y, &pt.y);
 
-        ret = hashfp(output, x, y, data);
+        // ret = hashfp(output, x, y, data);
+        ret = 1;
     }
 
     secp256k1_scalar_clear(&s);
